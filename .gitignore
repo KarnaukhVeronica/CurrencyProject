@@ -1,0 +1,13 @@
+*.user
+bin/
+obj/
+/.vs/Cryptocurrency/DesignTimeBuild/.dtbcache.v2
+/.vs/Cryptocurrency/FileContentIndex/7788fc43-c8cf-45a7-8b0f-98c9fab878da.vsidx
+/.vs/Cryptocurrency/FileContentIndex/8242e2d4-22ca-416f-a011-3fdb09f4a93f.vsidx
+/.vs/Cryptocurrency/FileContentIndex/8ac0b984-97fd-4a90-ad31-768021a39c25.vsidx
+/.vs/Cryptocurrency/FileContentIndex/c88efe22-389d-4e7b-a7d1-4a91f0f46917.vsidx
+/.vs/Cryptocurrency/FileContentIndex/read.lock
+/.vs/Cryptocurrency/v17/.futdcache.v2
+/.vs/Cryptocurrency/v17/.suo
+/.vs/ProjectEvaluation/cryptocurrency.metadata.v7.bin
+/.vs/ProjectEvaluation/cryptocurrency.projects.v7.bin

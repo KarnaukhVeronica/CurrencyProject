@@ -1,0 +1,70 @@
+﻿<Window x:Class="Cryptocurrency.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:local="clr-namespace:Cryptocurrency"
+        mc:Ignorable="d"
+        Title="CryptoManager" FontSize="14"
+        Height="600" Width="800" ResizeMode="NoResize"
+        Icon="/res/Icon.ico">
+
+    <Window.DataContext>
+        <local:ViewModel/>
+    </Window.DataContext>
+
+    <!-- Tabs -->
+    <TabControl TabStripPlacement="Top" SelectedIndex="{Binding SelectedTabIndex, Mode=TwoWay}">
+
+        <!-- Tab 0 -->
+        <TabItem Padding="10">
+            <!-- Header -->
+            <TabItem.Header>
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock FontSize="16" FontWeight="Bold">
+                            CoinGecko API
+                    </TextBlock>
+                </StackPanel>
+
+            </TabItem.Header>
+            <!-- Main Body -->
+            <Grid Margin="20 10 20 10">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Coin Gecko API Image -->
+                <Image Grid.Column="0" Grid.Row="0"
+                       Margin="0 0 10 0"
+                       Stretch="Uniform"
+                       Source="/res/CoinGeckoLogo.png"/>
+
+                <!-- Coin Gecko API Description -->
+                <TextBlock Grid.Column="1" Grid.Row="0"
+                           Margin="10 0 0 0"
+                           VerticalAlignment="Center"
+                           TextAlignment="Justify" TextWrapping="Wrap">
+                            CoinGecko is the world's largest independent crypto data aggregator
+                            that is integrated with more than 1,000 crypto exchanges and lists more than 17,000 coins.
+                            CoinGecko API offers the most comprehensive and reliable crypto market data
+                            through RESTful JSON endpoints.
+                            CoinGecko Pro API serves on-chain DEX data (Beta) across 200+ blockchain networks,
+                            1,600+ decentralized exchanges (DEXes), and 9M+ tokens, powered by GeckoTerminal.
+                            <LineBreak/>
+                            <Hyperlink Command="{Binding NavigateHyperlinkCommand}" CommandParameter="https://www.coingecko.com/">
+                                https://www.coingecko.com/.
+                            </Hyperlink>
+                </TextBlock>
+            </Grid>
+        </TabItem>
+    </TabControl>
+
+
+</Window>
