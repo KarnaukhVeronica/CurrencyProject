@@ -64,6 +64,113 @@
                 </TextBlock>
             </Grid>
         </TabItem>
+
+
+        <!-- Tab 1 -->
+        <TabItem Padding="10">
+            <!-- Header -->
+            <TabItem.Header>
+
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock FontSize="16" FontWeight="Bold">
+                            Top Currencies
+                    </TextBlock>
+                </StackPanel>
+
+            </TabItem.Header>
+            <!-- Main Body -->
+            <Grid Margin="10"
+                  VerticalAlignment="Top" HorizontalAlignment="Stretch">
+
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+
+                <!-- Error Message -->
+                <Grid Grid.Row="0"
+                      Margin="10"
+                      HorizontalAlignment="Center">
+                        <TextBlock Text="{Binding ErrorMessage}" FontWeight="Bold" Foreground="Red"/>
+                </Grid>
+
+                <!-- Top 10 Results -->
+                <!-- Column names -->
+                <Grid Grid.Row="1"
+                      HorizontalAlignment="Stretch">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock Grid.Column="0"
+                               Text="Image" FontWeight="Bold"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="1"
+                               Text="Name" FontWeight="Bold"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="2"
+                               Text="Price" FontWeight="Bold"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Grid.Column="3"
+                               Text="Market Rank" FontWeight="Bold"
+                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Grid>
+
+                <!-- List of results -->
+                <ListView Grid.Row="2"
+                          ItemsSource="{Binding CollectionTopCurrencies}" SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                          Margin="0" Padding="0" VerticalAlignment="Top"
+                          VerticalContentAlignment="Center" HorizontalContentAlignment="Center"
+                          ScrollViewer.VerticalScrollBarVisibility="Hidden" SelectionMode="Single">
+
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Margin="0" HorizontalAlignment="Stretch">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Image Grid.Column="0"
+                                       Source="{Binding image}"
+                                       Width="32" Height="32"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                                <StackPanel Grid.Column="1"
+                                            HorizontalAlignment="Center" VerticalAlignment="Center">
+                                    <TextBlock Text="{Binding symbol}"
+                                               FontWeight="Bold"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding name}"
+                                               FontStyle="Italic" FontSize="12"
+                                               HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </StackPanel>
+
+                                <TextBlock Grid.Column="2"
+                                           Text="{Binding current_price, TargetNullValue='N/A'}"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Grid.Column="3"
+                                           Text="{Binding market_cap_rank, TargetNullValue='N/A'}"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
+        </TabItem>
     </TabControl>
 
 
