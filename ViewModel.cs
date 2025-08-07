@@ -22,8 +22,10 @@ namespace Cryptocurrency
         public ViewModel()
         {
             NavigateHyperlinkCommand = new RelayCommand<string>(NavigateHyperlink);
+            ClickButtonCommand = new RelayCommand<string>(ClickButton);
 
             collectionTopCurrencies = new ObservableCollection<Currency>();
+            collectionSearchCurrencies = new ObservableCollection<Currency>();
         }
 
         // trigger property changing
@@ -56,11 +58,47 @@ namespace Cryptocurrency
             }
         }
 
+        // activate button
+        public ICommand ClickButtonCommand { get;  }
+        private void ClickButton(string button)
+        {
+            switch (button)
+            {
+                case "Search":
+                    {
+                        Debug.WriteLine("Search Button was clicked!");
+                        SearchCurrency();
+                        break;
+                    }
+                default:
+                    {
+                        Debug.WriteLine("Error: Button not identified!");
+                        break;
+                    }
+            }
+        }
 
 
         //
         // general variables
         //
+
+        // change search prompt - connect to View
+        private string searchPrompt;
+        public string SearchPrompt
+        {
+            get
+            {
+                return searchPrompt;
+            }
+
+            set
+            {
+                searchPrompt = value;
+                OnPropertyChanged(nameof(SearchPrompt));
+            }
+        }
+
         // save error message
         private string errorMessage;
         public string ErrorMessage
@@ -115,6 +153,11 @@ namespace Cryptocurrency
                     {
                         Debug.WriteLine("Tab 1 opened!");
                         LoadTabTopCurrency();
+                        break;
+                    }
+                case 2:
+                    {
+                        Debug.WriteLine("Tab 2 opened!");
                         break;
                     }
                 default:
@@ -182,5 +225,95 @@ namespace Cryptocurrency
                 ErrorMessage = "Unexpected error, try later!";
             }
         }
+
+        // tab 2 - search - connect to View
+        private ObservableCollection<Currency> collectionSearchCurrencies;
+        public ObservableCollection<Currency> CollectionSearchCurrencies
+        {
+            get
+            {
+                return collectionSearchCurrencies;
+            }
+
+            set
+            {
+                if (collectionSearchCurrencies != value)
+                {
+                    Debug.WriteLine("Collection of Search Currency was changed!");
+                    collectionSearchCurrencies = value;
+                    OnPropertyChanged(nameof(CollectionSearchCurrencies));
+                }
+            }
+        }
+
+        // tab 2 - search - logic
+        private void SearchCurrency()
+        {
+            ErrorMessage = string.Empty;
+            Debug.WriteLine($"Search for {searchPrompt} was initiated!");
+            try
+            {
+                // get results for search promt from API
+
+                string endpoints = "/search";
+                Dictionary<string, string> parameters = new Dictionary<string, string>
+                {
+                    { "query", searchPrompt }
+                };
+
+                string response = Model.makeAPICall(endpoints, parameters);
+
+                var coins = JObject.Parse(response)["coins"].ToObject<List<dynamic>>();
+
+                var coinsByName = coins
+                                    .Where(c =>
+                                    ((string)c.symbol).IndexOf(searchPrompt, StringComparison.OrdinalIgnoreCase) >= 0 ||
+                                    ((string)c.name).IndexOf(searchPrompt, StringComparison.OrdinalIgnoreCase) >= 0)
+                                    .ToList();
+
+                string ids = string.Join(",", coinsByName.Select(c => (string)c.id));
+
+                if (ids != String.Empty)
+                {
+                    // get info for searched currencies from API
+
+                    endpoints = "/coins/markets";
+
+                    parameters.Clear();
+                    parameters.Add("vs_currency", "uah");
+                    parameters.Add("ids", ids);
+                    parameters.Add("order", "name");
+                    parameters.Add("per_page", "250");
+                    parameters.Add("page", "1");
+
+                    response = Model.makeAPICall(endpoints, parameters);
+                    var searchCurrencies = JsonConvert.DeserializeObject<Currency[]>(response);
+                    CollectionSearchCurrencies = new ObservableCollection<Currency>(searchCurrencies);
+                }
+                else
+                {
+                    ErrorMessage = "Not Found";
+                    Debug.WriteLine("Search unsuccessfull!");
+                    CollectionSearchCurrencies = new ObservableCollection<Currency>();
+                }
+            }
+            catch (WebException exc)
+            {
+                Debug.WriteLine("Error: Response for tab 2 can't be disparsed!");
+                Debug.WriteLine("Error WebException: " + exc.Message);
+
+                CollectionSearchCurrencies = new ObservableCollection<Currency>();
+                ErrorMessage = "Server isn't available, try later!";
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Error: Response for tab 2 can't be disparsed!");
+                Debug.WriteLine("Error Exception: " + ex.Message);
+
+                CollectionSearchCurrencies = new ObservableCollection<Currency>();
+                ErrorMessage = "Unexpected error, plase try later!";
+            }
+        }
+
     }
 }
