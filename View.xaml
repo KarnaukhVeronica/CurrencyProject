@@ -297,6 +297,258 @@
         </TabItem>
 
 
+        <!-- Tab 3 -->
+        <TabItem Padding="10" IsEnabled="False">
+            <!-- Header -->
+            <TabItem.Header>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock >
+                            Currency Info
+                    </TextBlock>
+                </StackPanel>
+            </TabItem.Header>
+
+            <!-- Main Body -->
+            <!-- Scroll for tab -->
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <Grid DataContext="{Binding DetailsItem}"
+                      Margin="20 10 20 10">
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto" MaxHeight="200"/>
+                    <RowDefinition Height="*" MinHeight="600"/>
+                </Grid.RowDefinitions>
+
+                <Image Grid.Row="0" Grid.Column="0"
+                       Source="{Binding image}"
+                       Width="64" Height="64"
+                       HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+                <Grid Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Grid.Column="0"
+                          Margin="20 20 20 20">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   FontWeight="Bold">
+                            Symbol:
+                        </TextBlock>
+
+                        <TextBlock Grid.Row="1"
+                                   Text="{Binding symbol}"/>
+                    </Grid>
+
+                    <Grid Grid.Row="0" Grid.Column="1"
+                          Margin="20 20 20 20">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   FontWeight="Bold">
+                            Name:
+                        </TextBlock>
+
+                        <TextBlock Grid.Row="1"
+                                   Text="{Binding name}"/>
+                    </Grid>
+
+                    <Grid Grid.Row="1" Grid.Column="0"
+                          Margin="20 20 20 20">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   FontWeight="Bold">
+                            Market rank:
+                        </TextBlock>
+
+                        <TextBlock Grid.Row="1"
+                                   Text="{Binding market_cap_rank}"/>
+                    </Grid>
+
+                    <Grid Grid.Row="1" Grid.Column="1"
+                          Margin="20 20 20 20">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   FontWeight="Bold">
+                            Current price:
+                        </TextBlock>
+
+                        <TextBlock Grid.Row="1"
+                                   Text="{Binding current_price}"/>
+                    </Grid>
+
+                    <Grid Grid.Row="2" Grid.Column="0"
+                          Margin="20 20 20 20">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   FontWeight="Bold">
+                            Total volume:
+                        </TextBlock>
+
+                        <TextBlock Grid.Row="1"
+                                   Text="{Binding total_volume}"/>
+                    </Grid>
+
+                    <Grid Grid.Row="2" Grid.Column="1"
+                          Margin="20 20 20 20">
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="*"/>
+                        </Grid.RowDefinitions>
+
+                        <TextBlock Grid.Row="0"
+                                   FontWeight="Bold">
+                            Price change in 24h, %:
+                        </TextBlock>
+
+                        <TextBlock Grid.Row="1"
+                                   Text="{Binding price_change_percentage_24h}"/>
+                    </Grid>
+                </Grid>
+
+                <Grid Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3"
+                      Margin="20 20 20 20">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <TextBlock Grid.Row="0"
+                               FontWeight="Bold">
+                        Description:
+                    </TextBlock>
+
+                    <TextBlock Grid.Row="1"
+                               Text="{Binding descriptionEN}"
+                               FontSize="10" TextWrapping="Wrap" TextTrimming="CharacterEllipsis"/>
+                </Grid>
+
+                <ListView Grid.Row="2" Grid.Column="0"
+                          ItemsSource="{Binding linksAll}"
+                          Margin="20 20 20 20">
+
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <TextBlock>
+                                <Hyperlink NavigateUri="{Binding}" Command="{Binding DataContext.NavigateHyperlinkCommand, RelativeSource={RelativeSource AncestorType=Window}}" CommandParameter="{Binding}">
+                                    <TextBlock Text="{Binding}"/>
+                                </Hyperlink>
+                            </TextBlock>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+                    <ListView Grid.Row="2" Grid.Column="1"
+                              Margin="20 20 20 20"
+                              MaxHeight="200"
+                              ItemsSource="{Binding categories}"/>
+                <ListView Grid.Row="2" Grid.Column="2"
+                          ItemsSource="{Binding marketNames}"
+                          MaxHeight="200"/>
+
+                <lvc:CartesianChart Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="3"
+                                    Series="{Binding chart.series}"
+                                    Margin="20 20 20 20"
+                                    VerticalAlignment="Stretch" HorizontalAlignment="Stretch"
+                                    LegendLocation="Top">
+                    <lvc:CartesianChart.AxisX>
+                        <lvc:Axis Title="Time" Labels="{Binding chart.labels}"/>
+                    </lvc:CartesianChart.AxisX>
+                        <lvc:CartesianChart.AxisY>
+                            <lvc:Axis Title="Price (UAH)"/>
+                        </lvc:CartesianChart.AxisY>
+                    </lvc:CartesianChart>
+            </Grid>
+            </ScrollViewer>
+        </TabItem>
+
+
+        <!-- Tab 4 -->
+        <TabItem Padding="10" IsEnabled="False">
+            <TabItem.Header>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock >
+                            Market Info
+                    </TextBlock>
+                </StackPanel>
+            </TabItem.Header>
+        </TabItem>
+
+
+        <!-- Tab 5 -->
+        <TabItem Padding="10" IsEnabled="False">
+            <TabItem.Header>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <TextBlock >
+                            To be continued...
+                    </TextBlock>
+                </StackPanel>
+            </TabItem.Header>
+
+
+        </TabItem>
     </TabControl>
 
 

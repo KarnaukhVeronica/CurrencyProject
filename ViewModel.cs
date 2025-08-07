@@ -160,6 +160,16 @@ namespace Cryptocurrency
                         Debug.WriteLine("Tab 2 opened!");
                         break;
                     }
+                case 3:
+                    {
+                        Debug.WriteLine("Tab 3 opened!");
+                        break;
+                    }
+                case 4:
+                    {
+                        Debug.WriteLine("Tab 4 opened!");
+                        break;
+                    }
                 default:
                     {
                         Debug.WriteLine("Error: Tab not identified!");
@@ -315,5 +325,124 @@ namespace Cryptocurrency
             }
         }
 
+        // change selected item for tab 3 - connect to View
+        private Currency selectedItem;
+        public Currency SelectedItem
+        {
+            get
+            {
+                return selectedItem;
+            }
+
+            set
+            {
+                if (value != null)
+                {
+                    Debug.WriteLine("Selection item was changed!");
+                    selectedItem = value;
+                    OnPropertyChanged(nameof(SelectedItem));
+                    ItemChanged(selectedItem.id);
+                }
+            }
+        }
+
+        // change selected item for tab 3 - connect to View
+        private Currency detailsItem;
+        public Currency DetailsItem
+        {
+            get
+            {
+                return detailsItem;
+            }
+
+            set
+            {
+                if (value != null)
+                {
+                    Debug.WriteLine("Item details!");
+                    detailsItem = value;
+                    OnPropertyChanged(nameof(DetailsItem));
+                }
+            }
+        }
+
+        // change selected item for tab 3 - logic
+        private void ItemChanged(string id)
+        {
+            ErrorMessage = string.Empty;
+
+            Debug.WriteLine("Item selection was changed!");
+
+            try
+            {
+                // get general info about specific currency from API
+
+                string endpoints = $"/coins/{id}";
+                Dictionary<string, string> parameters = new Dictionary<string, string>();
+
+                string response = Model.makeAPICall(endpoints, parameters);
+
+                // remove unnecessary data
+                var jsonObj = JObject.Parse(response);
+                jsonObj["image"] = jsonObj["image"]?["large"]?.ToString();
+                jsonObj["current_price"] = jsonObj["market_data"]?["current_price"]?["uah"]?.Value<decimal>() ?? 0;
+                jsonObj["price_change_percentage_24h"] = jsonObj["market_data"]?["price_change_percentage_24h"]?.Value<double>() ?? 0;
+                jsonObj["total_volume"] = jsonObj["market_data"]?["total_volume"]?["uah"]?.Value<decimal>() ?? 0;
+                var item = JsonConvert.DeserializeObject<Currency>(jsonObj.ToString());
+
+                // get info about specific currency's tickers from API
+
+                var _endpoints = endpoints + "/tickers";
+                response = Model.makeAPICall(_endpoints, parameters);
+
+                // transform data
+                var tickers = JObject.Parse(response)["tickers"].ToObject<List<Ticker>>();
+                var market_names = tickers.Select(t => t.market.name).Distinct().ToList();
+                item.marketNames = market_names;
+
+                // get info about specific currency's chnage in price from API
+
+                _endpoints = endpoints + "/market_chart";
+
+                parameters.Clear();
+                parameters.Add("vs_currency", "uah");
+                parameters.Add("days", "7");
+
+                response = Model.makeAPICall(_endpoints, parameters);
+                var prices = JObject.Parse(response)["prices"].ToObject<List<List<string>>>();
+
+                // save as chart
+                var chart = new Chart();
+                chart.series = new SeriesCollection
+                {
+                    new LineSeries
+                    {
+                        Title="Chart for change of price",
+                        Values = new ChartValues<decimal>(prices.Select(p => decimal.Parse(p[1], CultureInfo.InvariantCulture)))
+                    }
+                };
+                chart.labels = prices.Select(p => DateTimeOffset.FromUnixTimeMilliseconds(long.Parse(p[0])).DateTime.ToString("G")).ToList();
+                item.chart = chart;
+
+                // update item
+                DetailsItem = item;
+                // change tab
+                SelectedTabIndex = 3;
+            }
+            catch (WebException exc)
+            {
+                Debug.WriteLine("Error: Response for tab 3 can't be disparsed!");
+                Debug.WriteLine("Error WebException: " + exc.Message);
+
+                ErrorMessage = "Server isn't available, try later!";
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Error: Response for tab 3 can't be disparsed!");
+                Debug.WriteLine("Error Exception: " + ex.Message);
+
+                ErrorMessage = "Unexpected error, try later!";
+            }
+        }
     }
 }
